@@ -33,13 +33,9 @@ jobs:
       run: |
         sudo -E apptainer build SYSMOIC-2024.2.sif ./SYSMOIC-2024.2.def
 
-    # Build lower case reference to registry
-    - id: lower-image-name
-      name: image-name to lowercase
-      run: |
-        echo "image-name=${env.IMAGE_NAME@L}" >> $GITHUB_OUTPUT
+    # Lowercase registry name needed for push. Hardcoding for now. See https://github.com/orgs/community/discussions/10553.
     - name: Log in to registry and deploy
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | sudo -E apptainer registry login -u ${{ github.actor }} --password-stdin ${{ env.REGISTRY }}
-        apptainer push SYSMOIC-2024.2.sif ${{ env.REGISTRY }}/${{ steps.lower-image-name.outputs.image-name }}:master
+        apptainer push SYSMOIC-2024.2.sif oras://ghcr.io/gqcg-oss/sysmoic-containers/sysmoic-2024.2-apptainer:master
