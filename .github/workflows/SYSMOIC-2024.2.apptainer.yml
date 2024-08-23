@@ -13,7 +13,7 @@ on:
       - '.github/workflows/SYSMOIC-2024.2.apptainer.yml'
 
 env:
-  REGISTRY: ghcr.io
+  REGISTRY: oras://ghcr.io
   IMAGE_NAME: ${{ github.repository }}/SYSMOIC-2024.2-apptainer
 
 jobs:
@@ -35,5 +35,6 @@ jobs:
     - name: Log in to registry and deploy
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u ${{ github.actor }} --password-stdin oras://ghcr.io
-        apptainer push SYSMOIC-2024.2.sif oras://ghcr.io/${{ env.IMAGE_NAME }}:master
+        echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u ${{ github.actor }} --password-stdin ${{ env.REGISTRY }}
+        echo "DEBUG"
+        apptainer push SYSMOIC-2024.2.sif ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:master
