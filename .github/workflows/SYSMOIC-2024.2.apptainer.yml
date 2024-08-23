@@ -38,4 +38,4 @@ jobs:
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       run: |
         echo "${{ secrets.GITHUB_TOKEN }}" | sudo -E apptainer registry login -u ${{ github.actor }} --password-stdin ${{ env.REGISTRY }}
-        apptainer push SYSMOIC-2024.2.sif oras://ghcr.io/gqcg-oss/sysmoic-containers/sysmoic-2024.2-apptainer:master
+        sudo -E apptainer push SYSMOIC-2024.2.sif oras://ghcr.io/gqcg-oss/sysmoic-containers/sysmoic-2024.2-apptainer:master
