@@ -19,6 +19,10 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
     - name: Set up Git repository
       uses: actions/checkout@v3
@@ -31,5 +35,5 @@ jobs:
     - name: Log in to registry and deploy
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u ${{ github.actor }} --password-stdin oras://ghcr.io
+        echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u $ --password-stdin oras://ghcr.io
         apptainer push SYSMOIC-2024.2.sif oras://ghcr.io/${{ env.IMAGE_NAME }}:master
