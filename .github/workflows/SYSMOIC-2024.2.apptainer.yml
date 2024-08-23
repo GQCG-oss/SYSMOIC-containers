@@ -35,6 +35,6 @@ jobs:
     - name: Log in to registry and deploy
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u ${{ github.actor }} --password-stdin ${{ env.REGISTRY }}
+        echo "${{ secrets.GITHUB_TOKEN }}" | sudo -E apptainer remote login -u ${{ github.actor }} --password-stdin ${{ env.REGISTRY }}
         echo "DEBUG"
         apptainer push SYSMOIC-2024.2.sif ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:master
